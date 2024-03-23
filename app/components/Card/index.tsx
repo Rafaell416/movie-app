@@ -3,9 +3,12 @@ import {useCallback} from 'react';
 import Icon, {Icons} from '../Icons';
 import Pressable from '../Pressable';
 import {useGetTradingType} from '../../hooks/home';
-import {ResultState} from '../../store/trending/trending';
+import {ResultState} from '../../store/result';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {useFavoriteActions, useGetLike} from '../../hooks/favorite';
+import {TabStackScreenProps} from '../../navigators/AppNavigator';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 const {width} = Dimensions.get('window');
 
 const COLUMN_GAP = 20;
@@ -16,28 +19,37 @@ const CardComponent = (props: {id: number; type: keyof ResultState}) => {
   const data = useGetTradingType(props);
   const {actions} = useFavoriteActions();
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AppStackParamList>>();
+
   const onLike = useCallback((data: Movie | Trending | TvShow) => {
     actions.setFavorite(data);
   }, []);
+
+  const onNavigate = useCallback(() => {
+    navigation.navigate('Details', {
+      id: props.id,
+      type: (data as Trending)?.media_type,
+    });
+  }, [(data as Trending)?.media_type]);
 
   const favorite = useGetLike(props.id);
 
   return (
     <View>
-      <Image
-        contentContainerStyle={[styles.container, styles.shadow]}
-        style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'hidden',
-          borderRadius: 10,
-        }}
-        source={{uri: 'https://image.tmdb.org/t/p/w500/' + data?.poster_path}}
-      />
-      <Pressable
-        onPress={onLike}
-        onPressParams={data}
-        style={styles.containerFavorite}>
+      <Pressable onPress={onNavigate}>
+        <Image
+          contentContainerStyle={[styles.container, styles.shadow]}
+          style={{
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            borderRadius: 10,
+          }}
+          source={{uri: 'https://image.tmdb.org/t/p/w500/' + data?.poster_path}}
+        />
+      </Pressable>
+      <Pressable onPress={onLike} onPressParams={data} style={styles.button}>
         <Icon
           type={Icons.MaterialIcons}
           size={20}
@@ -69,7 +81,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 9,
   },
-  containerFavorite: {
+  button: {
     borderWidth: 1,
     borderColor: '#383737',
     backgroundColor: '#1a1e25c1',

@@ -6,7 +6,7 @@ const favoriteActions = (dispatch: AppDispatch) => {
     setFavorite: (data: Movie | Trending | TvShow) => {
       dispatch(actionsSlice.setFavorite({data}));
     },
-    removeFavorite: (id: string) => {
+    removeFavorite: (id: number) => {
       dispatch(actionsSlice.removeFavorite({id}));
     },
   };

@@ -10,11 +10,15 @@ import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
+import {Details} from '../screens';
 
 const navigationRef = createNavigationContainerRef<AppStackParamList>();
 
-export type AppStackScreenProps<T extends keyof TabsNavigationParamList> =
+export type TabStackScreenProps<T extends keyof TabsNavigationParamList> =
   NativeStackScreenProps<TabsNavigationParamList, T>;
+
+export type AppStackScreenProps<T extends keyof AppStackParamList> =
+  NativeStackScreenProps<AppStackParamList, T>;
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
@@ -26,6 +30,7 @@ const AppStack = () => {
       }}
       initialRouteName="Root">
       <Stack.Screen name="Root" component={TabNavigationStack} />
+      <Stack.Screen name="Details" component={Details} />
     </Stack.Navigator>
   );
 };

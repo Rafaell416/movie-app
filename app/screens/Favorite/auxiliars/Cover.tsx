@@ -3,8 +3,8 @@ import {width} from '../../../utils/commons';
 import Image from '../../../components/Image';
 import {useGetFavorite} from '../../../hooks/favorite';
 
-const IMAGE_WIDTH = width * 0.7;
-const IMAGE_HEIGHT = IMAGE_WIDTH * 1.54;
+export const IMAGE_WIDTH = width * 0.7;
+export const IMAGE_HEIGHT = IMAGE_WIDTH * 1.54;
 
 interface CoverProps {
   id: number;

@@ -6,12 +6,21 @@ export interface ResultState {
   trending?: Record<string, Trending>;
   movie?: Record<string, Movie>;
   tv?: Record<string, TvShow>;
+  movieDetail?: Record<string, MovieDetail>;
+  tvDetail?: Record<string, TvShowDetail>;
 }
 
 const initialState: ResultState = {
   trending: {},
   movie: {},
   tv: {},
+  movieDetail: {},
+  tvDetail: {},
+};
+
+export const DETAIL: {movie: keyof ResultState; tv: keyof ResultState} = {
+  movie: 'movieDetail',
+  tv: 'tvDetail',
 };
 
 export const resultSlice = createSlice({
@@ -56,6 +65,15 @@ export const resultSlice = createSlice({
           },
           {...state.tv},
         );
+      },
+    );
+    builder.addMatcher(
+      api.endpoints.getDetail.matchFulfilled,
+      (state, action) => {
+        state[DETAIL[action.payload.params.type]] = {
+          ...state[DETAIL[action.payload.params.type]],
+          [action.payload.data.id]: action.payload.data,
+        };
       },
     );
   },

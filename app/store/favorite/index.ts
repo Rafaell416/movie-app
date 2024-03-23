@@ -23,7 +23,7 @@ export const favoriteSlice = createSlice({
       state.likes[data.id] = (state.likes[data.id] ?? 0) + 1;
       state.favorites[data.id] = data;
     },
-    removeFavorite: (state, action) => {
+    removeFavorite: (state, action: PayloadAction<{id: number}>) => {
       delete state.favorites[action.payload.id];
       delete state.likes[action.payload.id];
     },

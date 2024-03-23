@@ -6,9 +6,9 @@ import {
 } from '../store/services/api';
 import {map} from 'lodash';
 import {RootState} from '../store';
-import {trendingTypeSelector} from '../store/trending/selector';
+import {trendingTypeSelector} from '../store/result/selector';
 import {useSelector} from 'react-redux';
-import {ResultState} from '../store/trending/trending';
+import {ResultState} from '../store/result';
 
 export const useGetTrendingAll = () => {
   const {data, isLoading, isFetching, refetch} = useGetTrendingAllQuery();

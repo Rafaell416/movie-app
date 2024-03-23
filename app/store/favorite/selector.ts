@@ -3,9 +3,9 @@ import {RootState} from '..';
 import {keys} from 'lodash';
 
 export const likeSelector = createSelector(
-  ({favorite}: RootState) => favorite,
+  ({favorite}: RootState) => favorite.likes,
   (_: any, id: number) => id,
-  (data, id) => data.likes[id],
+  (data, id) => data[id],
 );
 
 export const favoritesSelector = createSelector(

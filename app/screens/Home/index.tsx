@@ -19,7 +19,6 @@ const Header = ({state, navigation}: MaterialTopTabBarProps) => {
   const onNavigate = (value: string) =>
     navigation.navigate(state.routes[TABS.indexOf(value)].name);
 
-  console.log('first', state.routeNames);
   return (
     <View style={{paddingTop: 10}}>
       <Tabs

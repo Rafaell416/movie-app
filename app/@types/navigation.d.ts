@@ -1,10 +1,9 @@
-type RootParamList = {
-  Public: undefined;
-  Private: undefined;
-};
-
 type AppStackParamList = {
   Root: undefined;
+  Details: {
+    id: number;
+    type: Trending['media_type'];
+  };
 };
 
 type TabsNavigationParamList = {

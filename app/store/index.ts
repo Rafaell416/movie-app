@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {api} from './services/api';
-import {resultSlice} from './trending/trending';
+import {resultSlice} from './result';
 import {favoriteSlice} from './favorite';
 
 const middlewares = [api.middleware];

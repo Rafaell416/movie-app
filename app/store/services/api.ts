@@ -1,5 +1,4 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {map} from 'lodash';
 
 const URL = 'https://api.themoviedb.org/3/';
 
@@ -35,11 +34,25 @@ export const api = createApi({
         return {...response, replace: ''};
       },
     }),
+    getDetail: build.query<
+      {
+        data: MovieDetail | TvShowDetail;
+        params: {id: number; type: Trending['media_type']};
+      },
+      {id: number; type: Trending['media_type']}
+    >({
+      query: params => `${params.type}/${params.id}?language=en-US`,
+      transformResponse: (response: MovieDetail | TvShowDetail, _, params) => {
+        return {data: response, params};
+      },
+    }),
   }),
+  keepUnusedDataFor: 60,
 });
 
 export const {
   useGetTrendingAllQuery,
   useGetTrendingMoviesQuery,
   useGetTrendingTvShowQuery,
+  useGetDetailQuery,
 } = api;
