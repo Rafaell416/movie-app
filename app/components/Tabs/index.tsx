@@ -14,11 +14,15 @@ type TabsProps = {
   onPress?: (option: string) => void;
 };
 
+const PADDING = 20;
+const INNER_RADIUS = 20;
+const OUTHER_RADIUS = INNER_RADIUS + PADDING;
+
 const Tabs: React.FC<TabsProps> = React.memo(
   ({options, selectedOption, onPress}) => {
     const {width: windowWidth} = useWindowDimensions();
 
-    const internalPadding = 20;
+    const internalPadding = PADDING;
     const segmentedControlWidth = windowWidth - 40;
 
     const itemWidth =
@@ -38,7 +42,7 @@ const Tabs: React.FC<TabsProps> = React.memo(
           styles.container,
           {
             width: segmentedControlWidth,
-            borderRadius: 20,
+            borderRadius: OUTHER_RADIUS,
             paddingLeft: internalPadding / 2,
           },
         ]}>
@@ -81,7 +85,7 @@ const styles = StyleSheet.create({
   },
   activeBox: {
     position: 'absolute',
-    borderRadius: 10,
+    borderRadius: INNER_RADIUS,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
