@@ -52,7 +52,7 @@ export const useGetTrendingTvShow = () => {
   );
 };
 
-export const useGetTradingType = (params: {
+export const useGetTrendingType = (params: {
   type: keyof ResultState;
   id: number;
 }) => {
