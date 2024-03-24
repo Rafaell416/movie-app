@@ -3,12 +3,12 @@ import {
   useGetTrendingAllQuery,
   useGetTrendingMoviesQuery,
   useGetTrendingTvShowQuery,
-} from '../store/services/api';
+} from '@app/store/services/api';
 import {map} from 'lodash';
-import {RootState} from '../store';
-import {trendingTypeSelector} from '../store/result/selector';
+import { RootState } from '../store';
+import {trendingTypeSelector} from '@app/store/result/selector';
 import {useSelector} from 'react-redux';
-import {ResultState} from '../store/result';
+import {ResultState} from '@app/store/result';
 
 export const useGetTrendingAll = () => {
   const {data, isLoading, isFetching, refetch} = useGetTrendingAllQuery();

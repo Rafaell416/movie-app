@@ -1,3 +1,28 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "target": "esnext",
+    "module": "CommonJS",
+    "lib": ["es6"],
+    "allowJs": true,
+    "maxNodeModuleJsDepth": 10,
+    "resolveJsonModule": true,
+    "jsx": "react-native",
+    "noEmit": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@screens/*": ["./app/screens/*"],
+      "@components/*": ["./app/components/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@theme/*": ["./app/theme/*"],
+      "@hooks/*": ["./app/hooks/*"],
+      "@utils/*": ["./app/utils/*"],
+      "@store/*": ["./app/store/*"]
+    },
+    "allowSyntheticDefaultImports": true
+  }
 }
