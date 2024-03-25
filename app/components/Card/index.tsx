@@ -20,6 +20,8 @@ const COLUMN = 2;
 const SPACE = 40;
 
 const CardComponent = (props: {id: number; type: keyof ResultState}) => {
+  const navigation =
+  useNavigation<NativeStackNavigationProp<AppStackParamList>>();
   const data = useGetTrendingType(props);
   const {actions} = useFavoriteActions();
   const favorite = useGetLike(props.id);
@@ -46,11 +48,6 @@ const CardComponent = (props: {id: number; type: keyof ResultState}) => {
     };
   });
 
-  const navigation =
-    useNavigation<NativeStackNavigationProp<AppStackParamList>>();
-
-
-
 
   const onNavigate = useCallback(() => {
     navigation.navigate('Details', {
@@ -61,7 +58,7 @@ const CardComponent = (props: {id: number; type: keyof ResultState}) => {
 
 
   return (
-    <View>
+    <View testID={`movieCard-${props.id}`}>
       <Pressable onPress={onNavigate}>
         <Image
           contentContainerStyle={[styles.container, styles.shadow]}
@@ -74,7 +71,7 @@ const CardComponent = (props: {id: number; type: keyof ResultState}) => {
           source={{uri: 'https://image.tmdb.org/t/p/w500/' + data?.poster_path}}
         />
       </Pressable>
-      <Pressable onPress={toggle} onPressParams={data} style={styles.button}>
+      <Pressable onPress={toggle} onPressParams={data} style={styles.button} testID={`favoriteButton-${props.id}`}>
         <Animated.View style={animatedStyles}>
           <Icon
             type={Icons.MaterialIcons}
