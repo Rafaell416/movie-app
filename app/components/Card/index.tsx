@@ -1,30 +1,22 @@
 import Image from '../Image';
 import {useCallback} from 'react';
-import Icon, {Icons} from '../Icons';
 import Pressable from '../Pressable';
-import {useGetTradingType} from '../../hooks/home';
-import {ResultState} from '../../store/result';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import {useFavoriteActions, useGetLike} from '../../hooks/favorite';
-import {TabStackScreenProps} from '../../navigators/AppNavigator';
+import {useGetTrendingType} from '@app/hooks/home';
+import {ResultState} from '@app/store/result';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 const {width} = Dimensions.get('window');
+import FavoriteButton from '../FavoriteButton';
 
 const COLUMN_GAP = 20;
 const COLUMN = 2;
 const SPACE = 40;
 
 const CardComponent = (props: {id: number; type: keyof ResultState}) => {
-  const data = useGetTradingType(props);
-  const {actions} = useFavoriteActions();
-
   const navigation =
-    useNavigation<NativeStackNavigationProp<AppStackParamList>>();
-
-  const onLike = useCallback((data: Movie | Trending | TvShow) => {
-    actions.setFavorite(data);
-  }, []);
+  useNavigation<NativeStackNavigationProp<AppStackParamList>>();
+  const data = useGetTrendingType(props);
 
   const onNavigate = useCallback(() => {
     navigation.navigate('Details', {
@@ -33,10 +25,8 @@ const CardComponent = (props: {id: number; type: keyof ResultState}) => {
     });
   }, [(data as Trending)?.media_type]);
 
-  const favorite = useGetLike(props.id);
-
   return (
-    <View>
+    <View testID={`movieCard-${props.id}`}>
       <Pressable onPress={onNavigate}>
         <Image
           contentContainerStyle={[styles.container, styles.shadow]}
@@ -49,14 +39,9 @@ const CardComponent = (props: {id: number; type: keyof ResultState}) => {
           source={{uri: 'https://image.tmdb.org/t/p/w500/' + data?.poster_path}}
         />
       </Pressable>
-      <Pressable onPress={onLike} onPressParams={data} style={styles.button}>
-        <Icon
-          type={Icons.MaterialIcons}
-          size={20}
-          name={!!favorite ? 'favorite' : 'favorite-outline'}
-          color={!!favorite ? 'red' : '#777a7c'}
-        />
-      </Pressable>
+      <View style={styles.buttonContainer}>
+        <FavoriteButton data={data}/>
+      </View>
     </View>
   );
 };
@@ -81,17 +66,10 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 9,
   },
-  button: {
-    borderWidth: 1,
-    borderColor: '#383737',
-    backgroundColor: '#1a1e25c1',
+  buttonContainer: {
     position: 'absolute',
     right: 5,
     top: 5,
-    borderRadius: 20 / 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
   },
 });
 

@@ -14,20 +14,23 @@ type TabsProps = {
   onPress?: (option: string) => void;
 };
 
+const PADDING = 20;
+const INNER_RADIUS = 20;
+const OUTHER_RADIUS = INNER_RADIUS + PADDING;
+
 const Tabs: React.FC<TabsProps> = React.memo(
   ({options, selectedOption, onPress}) => {
     const {width: windowWidth} = useWindowDimensions();
 
-    const internalPadding = 20;
     const segmentedControlWidth = windowWidth - 40;
 
     const itemWidth =
-      (segmentedControlWidth - internalPadding) / options.length;
+      (segmentedControlWidth - PADDING) / options.length;
 
     const rStyle = useAnimatedStyle(() => {
       return {
         left: withTiming(
-          itemWidth * options.indexOf(selectedOption) + internalPadding / 2,
+          itemWidth * options.indexOf(selectedOption) + PADDING / 2,
         ),
       };
     }, [selectedOption, options, itemWidth]);
@@ -38,8 +41,8 @@ const Tabs: React.FC<TabsProps> = React.memo(
           styles.container,
           {
             width: segmentedControlWidth,
-            borderRadius: 20,
-            paddingLeft: internalPadding / 2,
+            borderRadius: OUTHER_RADIUS,
+            paddingLeft: PADDING / 2,
           },
         ]}>
         <Animated.View
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   },
   activeBox: {
     position: 'absolute',
-    borderRadius: 10,
+    borderRadius: INNER_RADIUS,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
