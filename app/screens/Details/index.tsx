@@ -1,14 +1,18 @@
-import {width} from '../../utils/commons';
-import Image from '../../components/Image';
-import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
-import Gradient from '../../components/Gradient';
-import LayoutComponent from '../../components/Layout';
+import {verticalScale, width} from '@app/utils/commons';
+import Image from '@app/components/Image';
+import {ActivityIndicator, Pressable, StyleSheet, View, StyleProp, TextStyle} from 'react-native';
+import Gradient from '@app/components/Gradient';
+import LayoutComponent from '@app/components/Layout';
 import {IMAGE_HEIGHT, IMAGE_WIDTH} from '../Favorite/auxiliars/Cover';
-import {useSafeAreaInsetsStyle} from '../../utils/useSafeAreaInsetsStyle';
+import {useSafeAreaInsetsStyle} from '@app/utils/useSafeAreaInsetsStyle';
 import {AppStackScreenProps} from '../../navigators/AppNavigator';
-import Icon, {Icons} from '../../components/Icons';
-import {useGetDetailQuery} from '../../store/services/api';
-import {useGetDetails} from '../../hooks/details';
+import Icon, {Icons} from '@app/components/Icons';
+import {useGetDetailQuery} from '@app/store/services/api';
+import {useGetDetails} from '@app/hooks/details';
+import Text from '@app/components/Text';
+import { FadeIn, FadeOut } from "react-native-reanimated";
+import { moderateScale } from '@app/utils/commons';
+import { colors } from '@app/theme/colors';
 
 const IMAGE =
   'https://cdn.dribbble.com/users/3281732/screenshots/11192830/media/7690704fa8f0566d572a085637dd1eee.jpg?compress=1&resize=1200x1200';
@@ -48,17 +52,25 @@ const Header = ({onSaveFavorite, onGoBack, favorite}: HeaderProps) => {
   );
 };
 
+const FadingText = ({ text, style }: {text: string | number, style: StyleProp<TextStyle>}) => (
+  <Text
+    style={style}
+    entering={FadeIn.delay(150).duration(1000)}
+    exiting={FadeOut}
+  >
+    {text}
+  </Text>
+);
+
 const Details: React.FC<DetailsScreenProps> = ({navigation, route}) => {
   const containerInsets = useSafeAreaInsetsStyle(['top', 'bottom']);
 
-  console.log('first', {
-    id: route.params.id,
-    type: route.params.type,
-  });
   const {data, isFetching, isLoading} = useGetDetails({
     id: route.params.id,
     type: route.params.type,
   });
+
+  console.log({data})
 
   if (isFetching || isLoading) {
     return (
@@ -111,6 +123,16 @@ const Details: React.FC<DetailsScreenProps> = ({navigation, route}) => {
           }}
         />
       </View>
+      <View style={styles.textContainer}>
+        <FadingText text={data?.title} style={styles.title}/>
+      </View>
+      <View style={styles.textContainer}>
+        <FadingText text={data.overview} style={styles.overview}/>
+      </View>
+      <View style={styles.textContainer}>
+        <FadingText text={"★"} style={styles.vote_average}/>
+        <FadingText text={data.vote_average} style={styles.vote_average}/>
+      </View>
     </LayoutComponent>
   );
 };
@@ -125,6 +147,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
+  textContainer: {
+    width: '100%',
+    paddingVertical: verticalScale(8),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  title: {
+    fontSize: moderateScale(18), 
+    color: 'white',
+    letterSpacing: 2,
+    fontWeight: '700',
+    textAlign: 'center'
+  },
+  overview: {
+    color: 'white',
+    textAlign: 'justify',
+    fontWeight: '300',
+    letterSpacing: 1
+  },
+  vote_average: {
+    color: 'white',
+    textAlignVertical: 'center',
+    letterSpacing: 0.5,
+    fontSize: 12,
+    marginBottom: 5
+  }
 });
 
 export default Details;
