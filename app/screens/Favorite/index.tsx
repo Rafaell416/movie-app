@@ -1,5 +1,5 @@
 import {toInteger} from 'lodash';
-import {View, Image} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import Cover from './auxiliars/Cover';
 import React, {useCallback, useEffect} from 'react';
 import {width} from '../../utils/commons';
@@ -65,9 +65,8 @@ const Favorite: React.FC<FavoriteScreenProps> = ({}) => {
         );
       })}
       <Gradient />
-
       
-     {!!data.length ? (
+     {!!data.length && data[0] !== "undefined" ? (
       <>
       <Animated.FlatList
         horizontal
@@ -77,7 +76,6 @@ const Favorite: React.FC<FavoriteScreenProps> = ({}) => {
         onScroll={scrollHandler}
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => item.toString()}
-        //ListEmptyComponent={EmptyState}
         renderItem={renderItem}
       />
        <View
@@ -106,10 +104,10 @@ const Favorite: React.FC<FavoriteScreenProps> = ({}) => {
           />
         </Pressable>
       </View>
-      {isFocused && (
-        <SwipeGif />
-      )}
-      </>
+        {isFocused && (
+          <SwipeGif />
+        )}
+        </>
      ): (
       <EmptyState />
      )}
@@ -136,13 +134,7 @@ const SwipeGif = () => {
   }, []);
 
   return (
-    <Animated.View style={[{
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 150,
-      alignItems: 'center',
-    }, animatedStyles]}>
+    <Animated.View style={[styles.gif, animatedStyles]}>
        <Image
         source={require("../../assets/swipe-left.gif")}
         style={{
@@ -154,5 +146,15 @@ const SwipeGif = () => {
     </Animated.View>
   )
 }
+
+const styles = StyleSheet.create({
+  gif: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 150,
+    alignItems: 'center',
+  }
+})
 
 export default Favorite;

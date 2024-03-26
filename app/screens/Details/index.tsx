@@ -13,14 +13,11 @@ import { FadeIn, FadeOut } from "react-native-reanimated";
 import { moderateScale } from '@app/utils/commons';
 import FavoriteButton from '@app/components/FavoriteButton';
 
-const IMAGE =
-  'https://cdn.dribbble.com/users/3281732/screenshots/11192830/media/7690704fa8f0566d572a085637dd1eee.jpg?compress=1&resize=1200x1200';
-
 interface DetailsScreenProps extends AppStackScreenProps<'Details'> {}
 
 interface HeaderProps {
   onGoBack: () => void;
-  data?: unknown;
+  data: MovieDetail | TvShowDetail;
 }
 
 const Header = ({ onGoBack, data}: HeaderProps) => {
@@ -159,8 +156,8 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlignVertical: 'center',
     letterSpacing: 0.5,
-    fontSize: 12,
-    marginBottom: 5
+    fontSize: moderateScale(12),
+    marginBottom: verticalScale(5)
   }
 });
 

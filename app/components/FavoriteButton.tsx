@@ -9,7 +9,7 @@ import Pressable from "./Pressable";
 import Icon, {Icons} from './Icons';
 import { StyleSheet } from "react-native";
 
-const FavoriteButton = ({ onPress, data }: { onPress?: () => void, data?: unknown }) => {
+const FavoriteButton = ({ onPress, data }: { onPress?: () => void, data: MovieDetail | TvShowDetail; }) => {
   const {actions} = useFavoriteActions();
   const favorite = useGetLike(data.id);
   const scale = useSharedValue(1);
