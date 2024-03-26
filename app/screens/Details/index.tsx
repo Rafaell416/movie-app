@@ -7,12 +7,11 @@ import {IMAGE_HEIGHT, IMAGE_WIDTH} from '../Favorite/auxiliars/Cover';
 import {useSafeAreaInsetsStyle} from '@app/utils/useSafeAreaInsetsStyle';
 import {AppStackScreenProps} from '../../navigators/AppNavigator';
 import Icon, {Icons} from '@app/components/Icons';
-import {useGetDetailQuery} from '@app/store/services/api';
 import {useGetDetails} from '@app/hooks/details';
 import Text from '@app/components/Text';
 import { FadeIn, FadeOut } from "react-native-reanimated";
 import { moderateScale } from '@app/utils/commons';
-import { colors } from '@app/theme/colors';
+import FavoriteButton from '@app/components/FavoriteButton';
 
 const IMAGE =
   'https://cdn.dribbble.com/users/3281732/screenshots/11192830/media/7690704fa8f0566d572a085637dd1eee.jpg?compress=1&resize=1200x1200';
@@ -20,12 +19,11 @@ const IMAGE =
 interface DetailsScreenProps extends AppStackScreenProps<'Details'> {}
 
 interface HeaderProps {
-  favorite?: boolean;
   onGoBack: () => void;
-  onSaveFavorite: () => void;
+  data?: unknown;
 }
 
-const Header = ({onSaveFavorite, onGoBack, favorite}: HeaderProps) => {
+const Header = ({ onGoBack, data}: HeaderProps) => {
   return (
     <View
       style={{
@@ -40,14 +38,7 @@ const Header = ({onSaveFavorite, onGoBack, favorite}: HeaderProps) => {
           color={'white'}
         />
       </Pressable>
-      <Pressable onPress={onSaveFavorite} style={styles.button}>
-        <Icon
-          type={Icons.MaterialIcons}
-          size={25}
-          name={'favorite'}
-          color={!!favorite ? 'red' : '#777a7c'}
-        />
-      </Pressable>
+      <FavoriteButton data={data}/>
     </View>
   );
 };
@@ -69,8 +60,6 @@ const Details: React.FC<DetailsScreenProps> = ({navigation, route}) => {
     id: route.params.id,
     type: route.params.type,
   });
-
-  console.log({data})
 
   if (isFetching || isLoading) {
     return (
@@ -103,7 +92,7 @@ const Details: React.FC<DetailsScreenProps> = ({navigation, route}) => {
         />
         <Gradient />
       </View>
-      <Header onGoBack={navigation.goBack} onSaveFavorite={() => {}} />
+      <Header onGoBack={navigation.goBack} data={data}/>
 
       <View
         style={{
